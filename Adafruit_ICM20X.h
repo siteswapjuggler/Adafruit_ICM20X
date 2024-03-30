@@ -46,6 +46,21 @@
 #define ICM20X_B0_ACCEL_XOUT_H 0x2D ///< first byte of accel data
 #define ICM20X_B0_GYRO_XOUT_H 0x33  ///< first byte of accel data
 
+// Bank 1
+#define ICM20X_B1_SELF_TEST_X_GYRO 0x02         ///< Gyro X self-test output generated during manufacturing tests
+#define ICM20X_B1_SELF_TEST_Y_GYRO 0x03         ///< Gyro Y self-test output generated during manufacturing tests
+#define ICM20X_B1_SELF_TEST_X_GYRO 0x04         ///< Gyro Z self-test output generated during manufacturing tests
+#define ICM20X_B1_SELF_TEST_X_ACCEL 0x0E        ///< Accel X self-test output generated during manufacturing tests
+#define ICM20X_B1_SELF_TEST_Y_ACCEL 0x0F        ///< Accel Y self-test output generated during manufacturing tests
+#define ICM20X_B1_SELF_TEST_X_ACCEL 0x10        ///< Accel Z self-test output generated during manufacturing tests
+#define ICM20X_B1_XA_OFFS_H 0x14                ///< Upper bits of the X accelerometer offset cancellation
+#define ICM20X_B1_XA_OFFS_L 0x15                ///< Lower bits of the X accelerometer offset cancellation
+#define ICM20X_B1_YA_OFFS_H 0x17                ///< Upper bits of the Y accelerometer offset cancellation
+#define ICM20X_B1_YA_OFFS_L 0x18                ///< Lower bits of the Y accelerometer offset cancellation
+#define ICM20X_B1_ZA_OFFS_H 0x1A                ///< Upper bits of the Z accelerometer offset cancellation
+#define ICM20X_B1_ZA_OFFS_L 0x1B                ///< Lower bits of the Z accelerometer offset cancellation
+#define ICM20X_B1_TIMEBASE_CORRECTION_PLL 0x28  ///< System PLL clock period error (signed, [-10%, +10%]).
+
 // Bank 2
 #define ICM20X_B2_GYRO_SMPLRT_DIV 0x00    ///< Gyroscope data rate divisor
 #define ICM20X_B2_GYRO_CONFIG_1 0x01      ///< Gyro config for range setting
@@ -183,6 +198,15 @@ public:
 
   bool enableAccelDLPF(bool enable, icm20x_accel_cutoff_t cutoff_freq);
   bool enableGyrolDLPF(bool enable, icm20x_gyro_cutoff_t cutoff_freq);
+    
+  int16_t getAccelXOffset(void);
+  int16_t getAccelYOffset(void);
+  int16_t getAccelZOffset(void);
+
+  void setAccelXOffset(int16_t offset);
+  void setAccelYOffset(int16_t offset);
+  void setAccelZOffset(int16_t offset);
+  void setAccelOffset(int16_t offAccX, int16_t offAccY, int16_t offAccZ);
 
   void reset(void);
 

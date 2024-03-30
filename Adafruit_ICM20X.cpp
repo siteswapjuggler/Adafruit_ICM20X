@@ -46,7 +46,8 @@
 /*!
  *    @brief  Instantiates a new ICM20X class!
  */
-Adafruit_ICM20X::Adafruit_ICM20X(void) {}
+Adafruit_ICM20X::Adafruit_ICM20X(void) {
+}
 
 /*!
  *    @brief  Cleans up the ICM20X
@@ -142,6 +143,121 @@ bool Adafruit_ICM20X::begin_SPI(int8_t cs_pin, int8_t sck_pin, int8_t miso_pin,
 
   return _init(sensor_id);
 }
+
+/*!
+ * @brief Get Accelerator X offset from ICM20948 bank 1
+ *
+ */
+int16_t Adafruit_ICM20X::getAccelXOffset(void) {
+  _setBank(1);
+
+  const uint8_t numbytes = 2;
+  uint8_t buffer[numbytes];
+
+  Adafruit_BusIO_Register offset_reg = Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B1_XA_OFFS_H, numbytes);
+  offset_reg.read(buffer, numbytes);
+  
+  return buffer[0] << 8 | buffer[1];
+}
+
+/*!
+ * @brief Get Accelerator Y offset from ICM20948 bank 1
+ *
+ */
+int16_t Adafruit_ICM20X::getAccelYOffset(void) {
+  _setBank(1);
+
+  const uint8_t numbytes = 2;
+  uint8_t buffer[numbytes];
+
+  Adafruit_BusIO_Register offset_reg = Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B1_YA_OFFS_H, numbytes);
+  offset_reg.read(buffer, numbytes);
+  
+  return buffer[0] << 8 | buffer[1];
+}
+
+/*!
+ * @brief Get Accelerator Z offset from ICM20948 bank 1
+ *
+ */
+int16_t Adafruit_ICM20X::getAccelZOffset(void) {
+  _setBank(1);
+
+  const uint8_t numbytes = 2;
+  uint8_t buffer[numbytes];
+
+  Adafruit_BusIO_Register offset_reg = Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B1_ZA_OFFS_H, numbytes);
+  offset_reg.read(buffer, numbytes);
+  
+  return buffer[0] << 8 | buffer[1];
+}
+
+/*!
+ * @brief Set Accelerator X offset in ICM20948 bank 1
+ *
+ */
+void Adafruit_ICM20X::setAccelXOffset(int16_t offset) {
+  _setBank(1);
+
+  const uint8_t numbytes = 2;
+
+  Adafruit_BusIO_Register offset_reg = Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B1_XA_OFFS_H, numbytes);
+
+  uint8_t buffer[numbytes];
+  buffer[0] = offset >> 8;
+  buffer[1] = offset  & 0xFE;
+  
+  offset_reg.write(buffer, numbytes);
+}
+
+
+/*!
+ * @brief Set Accelerator Y offset in ICM20948 bank 1
+ *
+ */
+void Adafruit_ICM20X::setAccelYOffset(int16_t offset) {
+  _setBank(1);
+
+  const uint8_t numbytes = 2;
+
+  Adafruit_BusIO_Register offset_reg = Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B1_YA_OFFS_H, numbytes);
+
+  uint8_t buffer[numbytes];
+  buffer[0] = offset >> 8;
+  buffer[1] = offset & 0xFE;
+  
+  offset_reg.write(buffer, numbytes);
+}
+
+
+/*!
+ * @brief Set Accelerator X offset in ICM20948 bank 1
+ *
+ */
+void Adafruit_ICM20X::setAccelZOffset(int16_t offset) {
+  _setBank(1);
+
+  const uint8_t numbytes = 2;
+
+  Adafruit_BusIO_Register offset_reg = Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B1_ZA_OFFS_H, numbytes);
+
+  uint8_t buffer[numbytes];
+  buffer[0] = offset >> 8;
+  buffer[1] = offset & 0xFE;
+  
+  offset_reg.write(buffer, numbytes);
+}
+
+/*!
+ * @brief Set Accelerator offset in ICM20948 bank 1
+ *
+ */
+void Adafruit_ICM20X::setAccelOffset(int16_t offAccX, int16_t offAccY, int16_t offAccZ) {
+  setAccelXOffset(offAccX);
+  setAccelYOffset(offAccY);
+  setAccelZOffset(offAccZ);
+}
+
 
 /*!
  * @brief Reset the internal registers and restores the default settings
